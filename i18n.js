@@ -27,7 +27,7 @@ const locales = Object.keys(translations);
 /**
  * @type {string}
  */
-const defaultLocale = "de";
+const defaultLocale = "en";
 
 /**
  * @param {!string} locale name of the language to use for translation, MUST be one of the supported languages

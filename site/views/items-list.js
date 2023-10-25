@@ -312,7 +312,7 @@ class ItemsList extends View {
                         <td>
                             <div style="width: ${priceBase * currPrice}px"
                                 class="${textBold} price-line ${increase > 0 ? "bg-red-500" : "bg-green-500"}">
-                                € ${currPrice.toFixed(2)} ${priceUnit}
+                                kr ${currPrice.toFixed(2)} ${priceUnit}
                             </div>
                         </td>
                         ${
@@ -336,7 +336,7 @@ class ItemsList extends View {
         elements.name.href = stores[item.store].getUrl(item);
         elements.name.innerHTML = this.highlightMatches(this.model.lastQueryTokens ?? [], item.name) + (item.unavailable ? " 💀" : "");
         elements.quantity.innerText = (item.isWeighted ? "⚖ " : "") + `${quantity} ${unit}`;
-        elements.price.innerText = `€ ${Number(showUnitPrice ? unitPrice : price).toFixed(2)} ${priceUnit}`;
+        elements.price.innerText = `kr ${Number(showUnitPrice ? unitPrice : price).toFixed(2)} ${priceUnit}`;
         elements.priceHistory.innerHTML = priceHistory;
         elements.percentageChange.classList.add(percentageChange > 0 ? "text-red-500" : percentageChange < 0 ? "text-green-500" : "hidden");
         elements.percentageChange.innerText = `${percentageChange > 0 ? "+" + percentageChange : percentageChange}%`;
