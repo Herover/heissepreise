@@ -14,29 +14,56 @@ const units = {
 exports.getCanonical = function (item, today) {
     let quantity = 1;
     let unit = "";
-    let text = (item.price.basePrice?.text ?? "").trim().split("(")[0].replaceAll(",", ".").toLowerCase();
-    let isWeighted = false;
-
-    if (text === "per kg") {
-        isWeighted = true;
-        unit = "kg";
-    } else {
-        if (text.startsWith("bei") && text.search("je ") != -1) text = text.substr(text.search("je "));
-
-        for (let s of ["ab ", "je ", "ca. ", "z.b.: ", "z.b. "]) text = text.replace(s, "").trim();
-
-        const regex = /^([0-9.x ]+)(.*)$/;
-        const matches = text.match(regex);
-        if (matches) {
-            matches[1].split("x").forEach((q) => {
-                quantity = quantity * parseFloat(q.split("/")[0]);
-            });
-            unit = matches[2].split("/")[0].trim().split(" ")[0];
-        }
-        unit = unit.split("-")[0];
-    }
+    // let text = (item.price.basePrice?.text ?? "").trim().split("(")[0].replaceAll(",", ".").toLowerCase();
+    let text = (item.price.basePrice?.text ?? "").trim();
+    let keyfactText = (item.keyfacts?.supplementalDescription ?? "").trim().split("/")[0].replaceAll(",", ".").toLowerCase();
 
     const name = `${item.keyfacts?.supplementalDescription?.concat(" ") ?? ""}${item.fullTitle}`;
+
+    if (["stk", "par", "pk"].find((s) => "/" + s == text || s == text)) {
+        quantity = 1;
+        unit = "stk";
+        console.log(`${name} ${quantity} ${unit} stk`);
+    } else {
+        // if (text.startsWith("bei") && text.search("je ") != -1) text = text.substr(text.search("je "));
+
+        // for (let s of ["ab ", "je ", "ca. ", "z.b.: ", "z.b. "]) text = text.replace(s, "").trim();
+
+        const simpleUnitRegex = /^(\d+) (\w+)\.?$/;
+        const multipliedUnitRegex = /^(\d+) x (\d+) (\w+)\.?$/;
+        const rangeUnitRegex = /^(\d+)-(\d+) (\w+)\.?$/;
+
+        let matches = keyfactText.match(simpleUnitRegex);
+        if (matches && matches.length == 3) {
+            quantity = parseFloat(matches[1]);
+            unit = matches[2];
+            console.log(`${name} ${quantity} ${unit} simpleUnitRegex`);
+        }
+
+        if (!matches) {
+            matches = keyfactText.match(multipliedUnitRegex);
+            if (matches && matches.length == 4) {
+                quantity = parseFloat(matches[1]) * parseFloat(matches[2]);
+                unit = matches[3];
+                console.log(`${name} ${quantity} ${unit} multipliedUnitRegex`);
+            }
+        }
+
+        if (!matches) {
+            matches = keyfactText.match(rangeUnitRegex);
+            if (matches && matches.length == 4) {
+                quantity = (parseFloat(matches[1]) + parseFloat(matches[2])) / 2;
+                unit = matches[3];
+                console.log(`${name} ${quantity} ${unit} rangeUnitRegex`);
+            }
+        }
+
+        if (!matches) {
+            quantity = 1;
+            unit = "stk";
+            console.log(`${name} ${quantity} ${unit} unknown`);
+        }
+    }
 
     return utils.convertUnit(
         {
@@ -56,7 +83,7 @@ exports.getCanonical = function (item, today) {
 };
 
 exports.fetchData = async function () {
-    const LIDL_SEARCH = `https://www.lidl.at/p/api/gridboxes/AT/de/?max=${HITS}`;
+    const LIDL_SEARCH = `https://www.lidl.dk/p/api/gridboxes/DK/da/?max=${HITS}`;
     return (await axios.get(LIDL_SEARCH)).data.filter((item) => !!item.price.price);
 };
 
@@ -64,4 +91,4 @@ exports.initializeCategoryMapping = async () => {};
 
 exports.mapCategory = (rawItem) => {};
 
-exports.urlBase = "https://www.lidl.at";
+exports.urlBase = "https://www.lidl.dk";
