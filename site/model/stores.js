@@ -102,6 +102,14 @@ exports.stores = {
         getUrl: (item) => `https://www.lidl.dk${item.url}`,
         removeOld: true,
     },
+    rema1000: {
+        name: "REMA 1000",
+        budgetBrands: [],
+        color: "blue",
+        defaultChecked: true,
+        getUrl: (item) => `https://shop.rema1000.dk${item.url}`,
+        removeOld: true,
+    },
 };
 
 exports.STORE_KEYS = Object.keys(exports.stores);
