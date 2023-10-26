@@ -23,7 +23,6 @@ exports.getCanonical = function (item, today) {
     if (["stk", "par", "pk"].find((s) => "/" + s == text || s == text)) {
         quantity = 1;
         unit = "stk";
-        console.log(`${name} ${quantity} ${unit} stk`);
     } else {
         // if (text.startsWith("bei") && text.search("je ") != -1) text = text.substr(text.search("je "));
 
@@ -37,7 +36,6 @@ exports.getCanonical = function (item, today) {
         if (matches && matches.length == 3) {
             quantity = parseFloat(matches[1]);
             unit = matches[2];
-            console.log(`${name} ${quantity} ${unit} simpleUnitRegex`);
         }
 
         if (!matches) {
@@ -45,7 +43,6 @@ exports.getCanonical = function (item, today) {
             if (matches && matches.length == 4) {
                 quantity = parseFloat(matches[1]) * parseFloat(matches[2]);
                 unit = matches[3];
-                console.log(`${name} ${quantity} ${unit} multipliedUnitRegex`);
             }
         }
 
@@ -54,14 +51,17 @@ exports.getCanonical = function (item, today) {
             if (matches && matches.length == 4) {
                 quantity = (parseFloat(matches[1]) + parseFloat(matches[2])) / 2;
                 unit = matches[3];
-                console.log(`${name} ${quantity} ${unit} rangeUnitRegex`);
             }
         }
 
         if (!matches) {
             quantity = 1;
             unit = "stk";
-            console.log(`${name} ${quantity} ${unit} unknown`);
+        }
+
+        if (unit == "dele") {
+            quantity = 1;
+            unit = "stk";
         }
     }
 
