@@ -155,6 +155,7 @@ async function bundleJS(inputDir, outputDir, watch) {
     if (!watch) {
         await buildContext.rebuild();
         console.log("Generated JS");
+        buildContext.dispose();
     } else {
         buildContext.watch();
     }
