@@ -124,10 +124,12 @@ function setupLogging() {
             await analysis.updateData(dataDir);
             copyItemsToSite(dataDir);
         }
-        scheduleFunction(5, 0, 0, async () => {
-            items = await analysis.updateData(dataDir);
-            copyItemsToSite(dataDir);
-        });
+        if (!noServer) {
+            scheduleFunction(5, 0, 0, async () => {
+                items = await analysis.updateData(dataDir);
+                copyItemsToSite(dataDir);
+            });
+        }
     } else {
         copyItemsToSite(dataDir);
     }
