@@ -47,6 +47,7 @@ function parseArguments() {
     let port = process.env.PORT !== undefined && process.env.PORT != "" ? parseInt(process.env.PORT) : 3000;
     let liveReload = process.env.NODE_ENV === "development" || false;
     let skipDataUpdate = false;
+    let noServer = false;
     for (let i = 0; i < args.length; i++) {
         if (args[i] === "-p" || args[i] === "--port") {
             port = parseInt(args[i + 1]);
@@ -58,6 +59,8 @@ function parseArguments() {
             liveReload = true;
         } else if (args[i] === "-s" || args[i] === "--skip-data-update") {
             skipDataUpdate = true;
+        } else if (args[i] === "-ns" || args[i] === "--no-server") {
+            noServer = true;
         } else if (args[i] === "-h" || args[i] === "--help") {
             console.log("Usage: node server.js [-p|--port PORT] [-l|--live-reload]");
             console.log();
@@ -65,11 +68,12 @@ function parseArguments() {
             console.log("  -p, --port PORT         Port to listen on (default: 3000)");
             console.log("  -l, --live-reload       Enable live reload (automatically enabled if NODE_ENV is development)");
             console.log("  -s, --skip-data-update  Skip fetching data");
+            console.log("  -ns, --no-server        Do not start a HTTP server");
             process.exit(0);
         }
     }
 
-    return { port, liveReload, skipDataUpdate };
+    return { port, liveReload, skipDataUpdate, noServer };
 }
 
 function setupLogging() {
@@ -86,7 +90,7 @@ function setupLogging() {
 
 (async () => {
     const dataDir = "data";
-    const { port, liveReload, skipDataUpdate } = parseArguments();
+    const { port, liveReload, skipDataUpdate, noServer } = parseArguments();
 
     if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir);
@@ -128,42 +132,44 @@ function setupLogging() {
         copyItemsToSite(dataDir);
     }
 
-    const app = express();
-    app.use(compression());
-    app.use(function (req, res, next) {
-        if (req.method == "GET") {
-            if (req.path == "/") {
-                req.url = "/index.html";
-            }
-            if (req.path.endsWith(".html")) {
-                // Only html files are translated
-                let pickedLanguage = req.acceptsLanguages(i18n.locales);
-                if (pickedLanguage) {
-                    let translatedPath = req.path.substring(0, req.path.length - "html".length) + pickedLanguage + ".html";
-                    req.url = translatedPath;
-                } // otherwise use default, untranslated file
-            }
-        }
-        next();
-    });
-    app.use(express.static("site/output"));
-    const server = http.createServer(app).listen(port, () => {
-        console.log(`App listening on port ${port}`);
-    });
-    if (liveReload) {
-        const socketIO = require("socket.io");
-        const sockets = [];
-        const io = socketIO(server);
-        io.on("connection", (socket) => sockets.push(socket));
-        let timeoutId = 0;
-        chokidar.watch("site/output").on("all", () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                lastChangeTimestamp = Date.now();
-                for (let i = 0; i < sockets.length; i++) {
-                    sockets[i].send(`${lastChangeTimestamp}`);
+    if (!noServer) {
+        const app = express();
+        app.use(compression());
+        app.use(function (req, res, next) {
+            if (req.method == "GET") {
+                if (req.path == "/") {
+                    req.url = "/index.html";
                 }
-            }, 500);
+                if (req.path.endsWith(".html")) {
+                    // Only html files are translated
+                    let pickedLanguage = req.acceptsLanguages(i18n.locales);
+                    if (pickedLanguage) {
+                        let translatedPath = req.path.substring(0, req.path.length - "html".length) + pickedLanguage + ".html";
+                        req.url = translatedPath;
+                    } // otherwise use default, untranslated file
+                }
+            }
+            next();
         });
+        app.use(express.static("site/output"));
+        const server = http.createServer(app).listen(port, () => {
+            console.log(`App listening on port ${port}`);
+        });
+        if (liveReload) {
+            const socketIO = require("socket.io");
+            const sockets = [];
+            const io = socketIO(server);
+            io.on("connection", (socket) => sockets.push(socket));
+            let timeoutId = 0;
+            chokidar.watch("site/output").on("all", () => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    lastChangeTimestamp = Date.now();
+                    for (let i = 0; i < sockets.length; i++) {
+                        sockets[i].send(`${lastChangeTimestamp}`);
+                    }
+                }, 500);
+            });
+        }
     }
 })();
