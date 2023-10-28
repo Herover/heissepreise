@@ -108,7 +108,6 @@ exports.stores = {
         color: "blue",
         defaultChecked: true,
         getUrl: (item) => `https://shop.rema1000.dk${item.url}`,
-        removeOld: true,
     },
     nemlig: {
         name: "Nemlig",
