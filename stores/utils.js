@@ -78,16 +78,18 @@ exports.convertUnit = function (item, units, store, fallback) {
         } else {
             console.error(`Unknown unit in ${store}: '${unit}' in item ${item.name}`);
         }
+
+        item.priceHistory[0].quantity = item.quantity;
+        item.priceHistory[0].unit = item.unit;
+
         return item;
     }
 
     item.quantity = conv.factor * item.quantity;
     item.unit = conv.unit;
 
-    if (item.priceHistory) {
-        item.priceHistory[0].quantity = item.quantity;
-        item.priceHistory[0].unit = item.unit;
-    }
+    item.priceHistory[0].quantity = item.quantity;
+    item.priceHistory[0].unit = item.unit;
 
     return item;
 };
