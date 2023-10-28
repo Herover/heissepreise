@@ -14,6 +14,11 @@ exports.getCanonical = function (item, today) {
     let quantity = 1;
     let unit = "";
     const name = `${item.item.name}, ${item.item.underline}`;
+    const bio =
+        item.item.name.toLowerCase().startsWith("øko.") ||
+        item.item.name.toLowerCase().includes("økologisk") ||
+        item.item.description.toLowerCase().includes("økologisk") ||
+        item.item.declaration.toLowerCase().includes("økologisk");
 
     const unitRegex = /^(\d+\.?,?\d*) (\w+)\..*?$/;
 
@@ -37,7 +42,7 @@ exports.getCanonical = function (item, today) {
             unit,
             quantity,
             url: "/varer/" + item.item.id,
-            bio: false, // Not available in api
+            bio,
         },
         units,
         "rema1000"

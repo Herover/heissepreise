@@ -75,7 +75,7 @@ exports.getCanonical = function (item, today) {
             unit,
             quantity,
             url: item.canonicalUrl,
-            bio: name.toLowerCase().includes("bio"),
+            bio: name.toLowerCase().includes("øko"),
         },
         units,
         "lidl"
