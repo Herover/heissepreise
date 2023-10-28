@@ -110,6 +110,13 @@ exports.stores = {
         getUrl: (item) => `https://shop.rema1000.dk${item.url}`,
         removeOld: true,
     },
+    nemlig: {
+        name: "Nemlig",
+        budgetBrands: [],
+        color: "orange",
+        defaultChecked: true,
+        getUrl: (item) => `https://nemlig.dk${item.url}`,
+    },
 };
 
 exports.STORE_KEYS = Object.keys(exports.stores);

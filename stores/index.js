@@ -13,3 +13,4 @@
 // exports.bipa = require("./bipa");
 exports.lidl = require("./lidl");
 exports.rema1000 = require("./rema1000");
+exports.nemlig = require("./nemlig");
