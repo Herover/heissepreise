@@ -15,11 +15,11 @@ exports.getCanonical = function (item, today) {
     let unit = "";
     const name = `${item.item.name}, ${item.item.underline}`;
 
-    const unitRegex = /^(\d+\.?\d*) (\w+)\..*?$/;
+    const unitRegex = /^(\d+\.?,?\d*) (\w+)\..*?$/;
 
     let matches = item.item.underline.match(unitRegex);
     if (matches && matches.length == 3) {
-        quantity = parseFloat(matches[1]);
+        quantity = parseFloat(matches[1].replace(",", "."));
         unit = matches[2].toLowerCase();
         if (unit == "mtr") {
             unit = "stk";

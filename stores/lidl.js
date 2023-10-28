@@ -28,20 +28,20 @@ exports.getCanonical = function (item, today) {
 
         // for (let s of ["ab ", "je ", "ca. ", "z.b.: ", "z.b. "]) text = text.replace(s, "").trim();
 
-        const simpleUnitRegex = /^(\d+) (\w+)\.?$/;
-        const multipliedUnitRegex = /^(\d+) x (\d+) (\w+)\.?$/;
-        const rangeUnitRegex = /^(\d+)-(\d+) (\w+)\.?$/;
+        const simpleUnitRegex = /^(\d+\.?,?\d*) (\w+)\.?$/;
+        const multipliedUnitRegex = /^(\d+\.?,?\d*) x (\d+\.?,?\d*) (\w+)\.?$/;
+        const rangeUnitRegex = /^(\d+\.?,?\d*)-(\d+\.?,?\d*) (\w+)\.?$/;
 
         let matches = keyfactText.match(simpleUnitRegex);
         if (matches && matches.length == 3) {
-            quantity = parseFloat(matches[1]);
+            quantity = parseFloat(matches[1].replace(",", "."));
             unit = matches[2];
         }
 
         if (!matches) {
             matches = keyfactText.match(multipliedUnitRegex);
             if (matches && matches.length == 4) {
-                quantity = parseFloat(matches[1]) * parseFloat(matches[2]);
+                quantity = parseFloat(matches[1].replace(",", ".")) * parseFloat(matches[2].replace(",", "."));
                 unit = matches[3];
             }
         }
@@ -49,7 +49,7 @@ exports.getCanonical = function (item, today) {
         if (!matches) {
             matches = keyfactText.match(rangeUnitRegex);
             if (matches && matches.length == 4) {
-                quantity = (parseFloat(matches[1]) + parseFloat(matches[2])) / 2;
+                quantity = (parseFloat(matches[1].replace(",", ".")) + parseFloat(matches[2].replace(",", "."))) / 2;
                 unit = matches[3];
             }
         }
