@@ -4,7 +4,7 @@ const utils = require("./utils");
 const units = {
     "": { unit: "stk", factor: 1 },
     bakke: { unit: "stk", factor: 1 },
-    ltr: { unit: "l", factor: 1 },
+    ltr: { unit: "ml", factor: 1000 },
     bdt: { unit: "stk", factor: 1 },
     pk: { unit: "stk", factor: 1 },
     rl: { unit: "stk", factor: 1 },
