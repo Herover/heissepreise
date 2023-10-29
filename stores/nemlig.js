@@ -20,9 +20,9 @@ exports.getCanonical = function (item, today) {
     const name = `${item.Name}, ${item.Description}`;
     const bio = item.Name.toLowerCase().endsWith("øko.");
 
-    const simpleUnitRegex = /^(\d+\.?,?\d*) (\w+).*$/;
-    const multipliedUnitRegex = /^(\d+\.?,?\d*) x (\d+\.?,?\d*) (\w+).*$/;
-    const rangeUnitRegex = /^(\d+\.?,?\d*)-(\d+\.?,?\d*) (\w+).*$/;
+    const simpleUnitRegex = /^(?:[\w\s\/]+ \/ )??(\d+\.?,?\d*)\s+(\w+).*$/;
+    const multipliedUnitRegex = /^(?:[\w\s\/]+ \/ )??(\d+\.?,?\d*) x (\d+\.?,?\d*) (\w+).*$/;
+    const rangeUnitRegex = /^(?:[\w\s\/]+ \/ )??(\d+\.?,?\d*)\s*-\s*(\d+\.?,?\d*) (\w+).*$/;
 
     let matches = item.Description.match(multipliedUnitRegex);
     if (matches && matches.length == 4) {
