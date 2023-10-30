@@ -62,6 +62,9 @@ exports.globalUnits = {
     lt: { unit: "ml", factor: 1000 },
     liter: { unit: "ml", factor: 1000 },
     wg: { unit: "wg", factor: 1 },
+    rl: { unit: "stk", factor: 1 },
+    pk: { unit: "stk", factor: 1 },
+    br: { unit: "stk", factor: 1 },
 };
 
 exports.convertUnit = function (item, units, store, fallback) {
