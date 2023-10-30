@@ -94,6 +94,27 @@ exports.stores = {
     //     defaultChecked: false,
     //     getUrl: (item) => `https://www.muller.de/${item.url}`,
     // },
+    spar: {
+        name: "Spar",
+        budgetBrands: [],
+        color: "green",
+        defaultChecked: true,
+        getUrl: (item) => `https://glostrup.spar.dk${item.url}`,
+    },
+    meny: {
+        name: "Meny",
+        budgetBrands: [],
+        color: "red",
+        defaultChecked: true,
+        getUrl: (item) => `https://roenne.meny.dk${item.url}`,
+    },
+    minkobmand: {
+        name: "Min Købmand",
+        budgetBrands: [],
+        color: "white",
+        defaultChecked: true,
+        getUrl: (item) => `https://toksvard.minkobmand.dk${item.url}`,
+    },
     lidl: {
         name: "Lidl",
         budgetBrands: ["milbona", "alpengut", "cien", "livarno", "wiesentaler"],

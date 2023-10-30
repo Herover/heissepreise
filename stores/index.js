@@ -14,3 +14,6 @@
 exports.lidl = require("./lidl");
 exports.rema1000 = require("./rema1000");
 exports.nemlig = require("./nemlig");
+exports.meny = require("./meny");
+exports.minkobmand = require("./minkobmand");
+exports.spar = require("./spar");
