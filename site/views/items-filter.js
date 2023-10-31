@@ -83,7 +83,7 @@ class ItemsFilter extends View {
                 <label class="cursor-pointer inline-flex items-center gap-x-1 rounded-full bg-white border border-gray-400 px-2 py-1 text-xs font-medium text-gray-600">
                 ${__("ItemsFilter_Preis €")} <input x-id="minPrice" x-state x-input class="w-12" type="number" min="0" value="0">
                     -
-                    <input x-id="maxPrice" x-state x-input-debounce class="w-12" type="number" min="0" value="100">
+                    <input x-id="maxPrice" x-state x-input-debounce class="w-12" type="number" min="0" value="1000">
                 </label>
             </div>
 
@@ -271,7 +271,7 @@ class ItemsFilter extends View {
                 const budgetBrands = elements.budgetBrands.checked;
                 const bio = elements.bio.checked;
                 const minPrice = parseNumber(elements.minPrice.value, 0);
-                const maxPrice = parseNumber(elements.maxPrice.value, 100);
+                const maxPrice = parseNumber(elements.maxPrice.value, 1000);
                 filteredItems = filteredItems.filter((item) => {
                     if (budgetBrands && !BUDGET_BRANDS.some((budgetBrand) => item.name.toLowerCase().indexOf(budgetBrand) >= 0)) return false;
                     if (bio && !item.bio) return false;

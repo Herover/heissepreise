@@ -29,7 +29,7 @@ class ItemsChart extends View {
                     <custom-checkbox x-id="percentageChange" x-change x-state label="${__("ItemsChart_Änderung in % seit")}"></custom-checkbox>
                     <div
                         class="cursor-pointer inline-flex items-center gap-x-1 rounded-full bg-white border border-gray-400 px-2 py-1 text-xs font-medium text-gray-600">
-                        <input x-id="startDate" x-change x-state type="date" value="2017-01-01" />
+                        <input x-id="startDate" x-change x-state type="date" value="2023-10-31" />
                         -
                         <input x-id="endDate" x-change x-state type="date" value="${today()}"/>
                     </div>
@@ -205,7 +205,7 @@ class ItemsChart extends View {
         let startDate = this.elements.startDate.value;
         let endDate = this.elements.endDate.value;
         let validDate = /^20\d{2}-\d{2}-\d{2}$/;
-        if (!validDate.test(startDate)) startDate = "2017-01-01";
+        if (!validDate.test(startDate)) startDate = "2023-10-31";
         if (!validDate.test(endDate)) endDate = today();
         const percentageChange = this.elements.percentageChange.checked;
         const itemsToShow = [];
