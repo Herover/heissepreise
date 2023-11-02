@@ -137,6 +137,27 @@ exports.stores = {
         defaultChecked: true,
         getUrl: (item) => `https://nemlig.dk${item.url}`,
     },
+    fotex: {
+        name: "Føtex",
+        budgetBrands: [],
+        color: "deebblue",
+        defaultChecked: true,
+        getUrl: (item) => `https://føtex.dk`,
+    },
+    netto: {
+        name: "Netto",
+        budgetBrands: [],
+        color: "yellow",
+        defaultChecked: true,
+        getUrl: (item) => `https://netto.dk`,
+    },
+    bilkatogo: {
+        name: "BilkaToGo",
+        budgetBrands: [],
+        color: "cyan",
+        defaultChecked: true,
+        getUrl: (item) => `https://www.bilkatogo.dk${item.url}`,
+    },
 };
 
 exports.STORE_KEYS = Object.keys(exports.stores);

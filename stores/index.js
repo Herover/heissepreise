@@ -17,3 +17,6 @@ exports.nemlig = require("./nemlig");
 exports.meny = require("./meny");
 exports.minkobmand = require("./minkobmand");
 exports.spar = require("./spar");
+exports.fotex = require("./fotex");
+exports.netto = require("./netto");
+exports.bilkatogo = require("./bilkatogo");
