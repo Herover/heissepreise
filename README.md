@@ -1,8 +1,10 @@
 # Heisse Preise
 
-A terrible grocery price search "app". Fetches data from big Austrian grocery chains daily and lets you search them. See <https://heisse-preise.io>.
+A terrible grocery price search "app". Fetches data from big ~~Austrian~~ Danish grocery chains daily and lets you search them. See ~~https://heisse-preise.io~~ <https://heissepreise.leonora.app>.
 
 The project consists of a trivial NodeJS Express server responsible for fetching the product data, massaging it, and serving it to the front end (see `server.js`). The front end is a least-effort vanilla HTML/JS app (see sources in `site/`).
+
+Besides being danish, this clone is differs from the original by also tracking changes in quantity, and allows building the HTML pages without running a HTTP server. You can find the original project here <https://github.com/badlogic/heissepreise>.
 
 ## Requirements
 
@@ -75,9 +77,6 @@ curl -o data/latest-canonical.json https://heisse-preise.io/data/latest-canonica
 
 Restart the server with either `npm run dev` or `npm run start`.
 
-## Historical Data Credits
+You can run the project without downloading new data using the `-s` or `--skip` flag (eg. `npm run dev -- -s`).
 
-The live site at [heisse-preise.io](https://heisse-preise.io) feature historical data from:
-
--   [Dossier](https://www.dossier.at/dossiers/supermaerkte/quellen/anatomie-eines-supermarkts-die-methodik/)
--   [@h43z](https://h.43z.one), who runs [preisinflation.online](https://inflation.43z.one), another grocery price tracker.
+To only download data and build site without running a HTTP server, use `--no-server` or `-ns`, ex. `npm run start -- -ns`.
