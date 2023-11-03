@@ -43,7 +43,7 @@ exports.getCanonical = function (item, today, store) {
 
 exports.fetchData = async function (path, appId, key) {
     if (!path || !appId || !key) {
-        console.warn("A Salling store is missing information (" + arguments.join(", ") + ")");
+        console.warn(`A Salling store is missing information (${path}, ${appId}, ${key})`);
         return [];
     }
     const SEARCHSTRING = "";
