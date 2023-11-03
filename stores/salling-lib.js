@@ -42,6 +42,10 @@ exports.getCanonical = function (item, today, store) {
 };
 
 exports.fetchData = async function (path, appId, key) {
+    if (!path || !appId || !key) {
+        console.warn("A Salling store is missing information (" + arguments.join(", ") + ")");
+        return [];
+    }
     const SEARCHSTRING = "";
 
     const headers = {
@@ -54,7 +58,18 @@ exports.fetchData = async function (path, appId, key) {
         query: SEARCHSTRING,
         clickAnalytics: false,
         // Minimal amount of information needed, but "*" can be used to discover more
-        attributesToRetrieve: ["*"], //["objectID", "productName", "description", "units", "unitsOfMeasure", "storeData", "brand"],
+        attributesToRetrieve: [
+            "objectID",
+            "productName",
+            "name",
+            "brand",
+            "subBrand",
+            "description",
+            "units",
+            "unitsOfMeasure",
+            "storeData",
+            "productType",
+        ],
         // Max API wants to return appears to be 1000 items
         hitsPerPage: 1000,
         page: 0,
