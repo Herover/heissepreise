@@ -5,7 +5,7 @@ exports.getCanonical = function (item, today) {
 };
 
 exports.fetchData = async function () {
-    return dagrofa.fetchData(558155); // Rønne
+    return dagrofa.fetchData(558155, "https://longjohnapifrontdoor-meny-byeuf3fph3cpc5f9.z01.azurefd.net"); // Rønne
 };
 
 exports.initializeCategoryMapping = async () => {};
