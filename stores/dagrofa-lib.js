@@ -8,7 +8,7 @@ const units = {
     stks: { unit: "stk", factor: 1 },
 };
 
-exports.fetchData = async function (merchantId, base = "https://longjohnapifrontdoor-hndubyhwdyb6bzbj.z01.azurefd.net") {
+exports.fetchData = async function (merchantId, base = "https://longjohnapifrontdoor-hndubyhwdyb6bzbj.z01.azurefd.net", pageSize = 10000) {
     const path = "/Product/query?";
     const paramenters = `merchantId=${merchantId}&pageNumber=0&pageSize=${pageSize}&displayedInStore=true`;
 
