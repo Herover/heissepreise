@@ -207,6 +207,8 @@ function compress(items) {
         for (price of item.priceHistory) {
             data.push(uniqueDates[price.date.replaceAll("-", "")]);
             data.push(price.price);
+            data.push(price.quantity);
+            data.push(price.unit);
         }
         data.push(item.unit);
         data.push(item.quantity);

@@ -141,10 +141,10 @@ class Items extends Model {
             item.search = item.name + " " + item.quantity + " " + item.unit;
             item.search = intern(item.search.toLowerCase().replace(",", "."));
 
-            const unitPriceFactor = item.unit == "g" || item.unit == "ml" ? 1000 : 1;
             for (let i = 0; i < item.priceHistory.length; i++) {
                 const price = item.priceHistory[i];
-                price.unitPrice = (price.price / item.quantity) * unitPriceFactor;
+                const unitPriceFactor = price.unit == "g" || price.unit == "ml" ? 1000 : 1;
+                price.unitPrice = (price.price / price.quantity) * unitPriceFactor;
             }
         });
 
@@ -189,9 +189,13 @@ exports.decompress = (compressedItems) => {
         for (let j = 0; j < numPrices; j++) {
             const date = dates[data[i++]];
             const price = data[i++];
+            const quantity = data[i++];
+            const unit = data[i++];
             prices[j] = {
                 date: date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8),
                 price,
+                quantity,
+                unit,
             };
         }
         const unit = data[i++];

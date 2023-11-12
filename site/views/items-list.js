@@ -305,6 +305,13 @@ class ItemsList extends View {
                     : item.priceHistory[i + 1].price
                 : currPrice;
             const increase = Math.round(((currPrice - lastPrice) / lastPrice) * 100);
+            let amount = item.priceHistory[i].quantity.toFixed(0) + " " + item.priceHistory[i].unit;
+            let pricePerUnit = "";
+            if (showUnitPrice) {
+                if (item.priceHistory[i].unit === "g") pricePerUnit = " / kg";
+                else if (item.priceHistory[i].unit === "ml") pricePerUnit = " / l";
+                else pricePerUnit = " / stk";
+            }
 
             priceHistory += `
                     <tr>
@@ -312,7 +319,7 @@ class ItemsList extends View {
                         <td>
                             <div style="width: ${priceBase * currPrice}px"
                                 class="${textBold} price-line ${increase > 0 ? "bg-red-500" : "bg-green-500"}">
-                                kr ${currPrice.toFixed(2)} ${priceUnit}
+                                kr ${currPrice.toFixed(2)}${pricePerUnit} (${amount})
                             </div>
                         </td>
                         ${
