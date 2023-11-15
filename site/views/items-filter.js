@@ -70,6 +70,9 @@ class ItemsFilter extends View {
                 <label>
                     <input x-id="priceChangesCheaper" x-state type="radio" name="type" /> ${__("ItemsFilter_Billiger seit letzter Änderung")}
                 </label>
+                <label>
+                    <input x-id="quantityChanges" x-state type="radio" name="type" /> ${__("ItemsFilter_Quantity changes")}
+                </label>
             </div>
 
             <div x-id="misc" class="flex items-center justify-center flex-wrap gap-2 mt-4 ${hideMisc}">
@@ -159,6 +162,10 @@ class ItemsFilter extends View {
             this.fireChangeEvent();
         });
 
+        elements.quantityChanges.addEventListener("change", () => {
+            this.fireChangeEvent();
+        });
+
         this.setupEventHandlers();
 
         this.addEventListener("x-change", () => {
@@ -227,6 +234,21 @@ class ItemsFilter extends View {
                     }
                     return false;
                 });
+            } else if (elements.quantityChanges.checked) {
+                filteredItems = filteredItems.filter((item) => {
+                    if (item.priceHistory.length == 1) return false;
+                    return item.priceHistory.some((e) => {
+                        if (
+                            e.quantity != item.priceHistory[0].quantity &&
+                            e.unit == item.priceHistory[0].unit &&
+                            Math.max(e.quantity, item.priceHistory[0].quantity) / Math.min(e.quantity, item.priceHistory[0].quantity) < 2
+                        ) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
             } else {
                 filteredItems = filteredItems.filter((item) => {
                     if (item.priceHistory.length == 1) return false;
@@ -253,6 +275,8 @@ class ItemsFilter extends View {
                             }
                         }
                     }
+                } else if (elements.quantityChanges.checked) {
+                    return true;
                 } else {
                     if (increased && item.priceHistory[0].price > item.priceHistory[1].price) return true;
                     if (decreased && item.priceHistory[0].price < item.priceHistory[1].price) return true;
