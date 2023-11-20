@@ -17,6 +17,7 @@
 const translations = {
     // sorted alphabetically
     cs: require("./locales/cs.json"),
+    da: require("./locales/da.json"),
     de: require("./locales/de.json"),
     en: require("./locales/en.json"),
 };
