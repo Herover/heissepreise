@@ -246,7 +246,8 @@ class ItemsList extends View {
                     <span class="action">
                         <label x-id="chart" class="${this._chart ? "" : "hidden"}">
                             <input x-id="chartCheckbox" type="checkbox" class="hidden peer">
-                            <span class="peer-checked:bg-blue-700 btn-action">📈</span>
+                            <!--<span class="peer-checked:bg-blue-700 btn-action">📈</span>-->
+                            <span x-id="sparkline"></span>
                         </label>
                         <input x-id="add" type="button" class="${this._add ? "" : "hidden"} btn-action" value="+">
                         <input x-id="remove" type="button" class="${this._remove ? "" : "hidden"} btn-action" value="-">
@@ -368,6 +369,48 @@ class ItemsList extends View {
                 }
             });
         });
+
+        const height = 23;
+        const width = 100;
+        const pointR = 2;
+        const minPrice = item.priceHistory.reduce((acc, e) => Math.min(acc, e.price), 9999999);
+        const maxPrice = item.priceHistory.reduce((acc, e) => Math.max(acc, e.price), -9999999);
+        const timeRange = 1000 * 60 * 60 * 24 * 28;
+        const rangeAgo = Date.now() - timeRange;
+        // console.log(item)
+        const sparkData = [...item.priceHistory]
+            // Oldest data point first
+            .reverse()
+            // make dates easier to do math on
+            .map((e) => ({ date: (new Date(e.date).getTime() - rangeAgo) / timeRange, price: e.price / maxPrice }))
+            // Only show recent prices in graph but include 1 point outside the date range.
+            // Required to get the correct first y coord
+            .filter((e, i) => e.date >= 0 || (item.priceHistory.length > i + 1 && item.priceHistory[i + 1] >= 0));
+        sparkData.push({
+            date: 1,
+            price: sparkData[sparkData.length - 1].price,
+        });
+        // console.log(sparkData)
+        const sparkXFun = (p) => Math.round(p.date * (width - pointR));
+        const sparkYFun = (p) => Math.round(height - p.price * (height - pointR * 2)) - pointR + 0.5;
+        const sparklinePath = sparkData.reduce(
+            (acc, e, i, original) => {
+                return {
+                    p: acc.p + `L${sparkXFun(e)},${sparkYFun(acc.l)}L${sparkXFun(e)},${sparkYFun(e)}`,
+                    l: e,
+                };
+            },
+            { p: `M${sparkXFun(sparkData[0])},${sparkYFun(sparkData[0])}`, l: sparkData[0] }
+        );
+        elements.sparkline.innerHTML = `<svg height=${height} width=${width}>
+            <path d=${sparklinePath.p}L${sparkXFun(sparkData[sparkData.length - 1])},${height}L${sparkXFun(
+            sparkData[0]
+        )},${height} stroke="none" fill="rgba(201,84,58,0.2)"/>
+            <path d=${sparklinePath.p} stroke="black" fill="none"/>
+            <circle cx=${sparkXFun(sparkData[sparkData.length - 1])} cy=${
+            sparkYFun(sparkData[sparkData.length - 1]) - 0.5
+        } r=${pointR} fill="#000000"/>
+        </svg>`;
 
         if (this._chart) {
             elements.chartCheckbox.checked = item.chart;
