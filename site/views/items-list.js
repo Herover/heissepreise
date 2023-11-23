@@ -373,8 +373,8 @@ class ItemsList extends View {
         const height = 23;
         const width = 100;
         const pointR = 2;
-        const minPrice = item.priceHistory.reduce((acc, e) => Math.min(acc, e.price), 9999999);
-        const maxPrice = item.priceHistory.reduce((acc, e) => Math.max(acc, e.price), -9999999);
+        const minPrice = item.priceHistory.reduce((acc, e) => Math.min(acc, showUnitPrice ? e.price / e.quantity : e.price), 9999999);
+        const maxPrice = item.priceHistory.reduce((acc, e) => Math.max(acc, showUnitPrice ? e.price / e.quantity : e.price), -9999999);
         const timeRange = 1000 * 60 * 60 * 24 * 28;
         const rangeAgo = Date.now() - timeRange;
         // console.log(item)
@@ -382,17 +382,20 @@ class ItemsList extends View {
             // Oldest data point first
             .reverse()
             // make dates easier to do math on
-            .map((e) => ({ date: (new Date(e.date).getTime() - rangeAgo) / timeRange, price: e.price / maxPrice }))
+            .map((e) => ({ date: (new Date(e.date).getTime() - rangeAgo) / timeRange, price: e.price / maxPrice, quantity: e.quantity }))
             // Only show recent prices in graph but include 1 point outside the date range.
             // Required to get the correct first y coord
             .filter((e, i) => e.date >= 0 || (item.priceHistory.length > i + 1 && item.priceHistory[i + 1] >= 0));
+        // if (!item.unavailable) {
         sparkData.push({
             date: 1,
             price: sparkData[sparkData.length - 1].price,
+            quantity: sparkData[sparkData.length - 1].quantity,
         });
+        // }
         // console.log(sparkData)
         const sparkXFun = (p) => Math.round(p.date * (width - pointR));
-        const sparkYFun = (p) => Math.round(height - p.price * (height - pointR * 2)) - pointR + 0.5;
+        const sparkYFun = (p) => Math.round(height - (showUnitPrice ? p.price / p.quantity : p.price) * (height - pointR * 2)) - pointR + 0.5;
         const sparklinePath = sparkData.reduce(
             (acc, e, i, original) => {
                 return {
