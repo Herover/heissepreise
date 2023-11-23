@@ -138,11 +138,12 @@ class ItemsChart extends View {
         let yAxis = {
             ticks: {
                 callback: function (value, index, ticks) {
-                    return value.toLocaleString(navigator.language || "de-DE", {
-                        minimumFractionDigits: 2,
-                        style: "currency",
-                        currency: "EUR",
-                    });
+                    return (
+                        "Kr " +
+                        value.toLocaleString(navigator.language || "da-DK", {
+                            minimumFractionDigits: 2,
+                        })
+                    );
                 },
             },
         };
@@ -186,7 +187,7 @@ class ItemsChart extends View {
                         },
                         title: {
                             display: true,
-                            text: "Date",
+                            text: "Dato",
                         },
                     },
                     y: yAxis,

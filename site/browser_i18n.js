@@ -13,6 +13,7 @@ var currentLocale = i18n.defaultLocale;
  */
 function setLocale(locale) {
     if (i18n.locales.includes(locale)) {
+        locale = "da"; // Force danish on this site
         console.log("Locale changed to " + locale);
         currentLocale = locale;
         return true;
