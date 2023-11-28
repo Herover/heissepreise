@@ -385,7 +385,7 @@ class ItemsList extends View {
             .map((e) => ({ date: (new Date(e.date).getTime() - rangeAgo) / timeRange, price: e.price / maxPrice, quantity: e.quantity }))
             // Only show recent prices in graph but include 1 point outside the date range.
             // Required to get the correct first y coord
-            .filter((e, i) => e.date >= 0 || (item.priceHistory.length > i + 1 && item.priceHistory[i + 1] >= 0));
+            .filter((e, i, org) => org.length == 1 || e.date >= 0 || (item.priceHistory.length > i + 1 && item.priceHistory[i + 1] >= 0));
         // if (!item.unavailable) {
         sparkData.push({
             date: 1,
