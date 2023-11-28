@@ -377,7 +377,7 @@ class ItemsList extends View {
         const maxPrice = item.priceHistory.reduce((acc, e) => Math.max(acc, showUnitPrice ? e.price / e.quantity : e.price), -9999999);
         const timeRange = 1000 * 60 * 60 * 24 * 28;
         const rangeAgo = Date.now() - timeRange;
-        // console.log(item)
+        console.log(item);
         const sparkData = [...item.priceHistory]
             // Oldest data point first
             .reverse()
@@ -385,7 +385,7 @@ class ItemsList extends View {
             .map((e) => ({ date: (new Date(e.date).getTime() - rangeAgo) / timeRange, price: e.price / maxPrice, quantity: e.quantity }))
             // Only show recent prices in graph but include 1 point outside the date range.
             // Required to get the correct first y coord
-            .filter((e, i, org) => org.length == 1 || e.date >= 0 || (item.priceHistory.length > i + 1 && item.priceHistory[i + 1] >= 0));
+            .filter((e, i, org) => org.length == 1 || e.date >= 0 || (org.length > i + 1 && org[i + 1].date >= 0));
         // if (!item.unavailable) {
         sparkData.push({
             date: 1,
@@ -393,7 +393,7 @@ class ItemsList extends View {
             quantity: sparkData[sparkData.length - 1].quantity,
         });
         // }
-        // console.log(sparkData)
+        console.log(sparkData);
         const sparkXFun = (p) => Math.round(p.date * (width - pointR));
         const sparkYFun = (p) => Math.round(height - (showUnitPrice ? p.price / p.quantity : p.price) * (height - pointR * 2)) - pointR + 0.5;
         const sparklinePath = sparkData.reduce(
