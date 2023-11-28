@@ -186,6 +186,8 @@ exports.decompress = (compressedItems) => {
         const unavailable = data[i++] == 1;
         const numPrices = data[i++];
         const prices = new Array(numPrices);
+        let u = "";
+        let q = "";
         for (let j = 0; j < numPrices; j++) {
             const date = dates[data[i++]];
             const price = data[i++];
@@ -197,6 +199,12 @@ exports.decompress = (compressedItems) => {
                 quantity,
                 unit,
             };
+            if (u == "") {
+                u = unit;
+                q = quantity;
+            } else if (u == unit && q != quantity && Math.abs(q - quantity) < Math.min(quantity, q) * 2) {
+                console.log(name, unit, quantity, u, q);
+            }
         }
         const unit = data[i++];
         const quantity = data[i++];
