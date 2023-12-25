@@ -1,6 +1,6 @@
 # Heisse Preise
 
-A terrible grocery price search "app". Fetches data from big ~~Austrian~~ Danish grocery chains daily and lets you search them. See ~~https://heisse-preise.io~~ <https://heissepreise.leonora.app>.
+A terrible grocery price search "app". Fetches data from big ~~Austrian~~ Danish grocery chains daily and lets you search them. See ~~https://heisse-preise.io~~ <https://dagligepriser.dk>.
 
 The project consists of a trivial NodeJS Express server responsible for fetching the product data, massaging it, and serving it to the front end (see `server.js`). The front end is a least-effort vanilla HTML/JS app (see sources in `site/`).
 
