@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/badlogic/heissepreise.git"
+    "url": "git+https://github.com/herover/heissepreise.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/badlogic/heissepreise/issues"
+    "url": "https://github.com/herover/heissepreise/issues"
   },
-  "homepage": "https://github.com/badlogic/heissepreise#readme",
+  "homepage": "https://github.com/herover/heissepreise#readme",
   "dependencies": {
     "alasql": "^4.0.4",
     "axios": "^1.4.0",
