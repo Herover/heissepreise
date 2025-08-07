@@ -5,7 +5,7 @@ exports.getCanonical = function (item, today) {
 };
 
 exports.fetchData = async function () {
-    return dagrofa.fetchData(1263); // Rågeleje
+    return dagrofa.fetchData(1302, "https://longjohnapi.azurewebsites.net"); // Rødovre
 };
 
 exports.initializeCategoryMapping = async () => {};

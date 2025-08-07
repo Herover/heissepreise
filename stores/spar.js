@@ -5,7 +5,7 @@ exports.getCanonical = function (item, today) {
 };
 
 exports.fetchData = async function () {
-    return dagrofa.fetchData(1222); // Glostrup
+    return dagrofa.fetchData(1222, "https://longjohnapi.azurewebsites.net"); // Glostrup
 };
 
 exports.initializeCategoryMapping = async () => {};
